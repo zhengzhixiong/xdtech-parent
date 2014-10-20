@@ -191,6 +191,10 @@ public class SimpleHibernateDao<T, ID extends Serializable> {
 	public <X> List<X> findByHql(final String hql, final Object... values) {
 		return createHqlQuery(hql, values).list();
 	}
+	
+	public <X> List<X> findByClass(Class<?> cls) {
+		return createHqlQuery("from "+cls.getSimpleName()).list();
+	}
 
 	/**
 	 * 按HQL查询对象列表.

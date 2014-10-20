@@ -36,6 +36,10 @@ public class BaseService<T extends BaseModel>  {
 	public List<T> getAll() {
 		return baseDao.getAll();
 	}
+	
+	public List<T> getAll(Class<?> cls) {
+		return baseDao.findByClass(cls);
+	}
 
 	public BaseDao<T> getBaseDao() {
 		return baseDao;

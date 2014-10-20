@@ -13,13 +13,22 @@ import com.xdtech.core.model.BaseModel;
  * @create 2014-9-25下午9:31:49
  */
 public interface SysInitOperation {
-	public static String INIT_METHOD = "initing";
+	public static String INIT_TO_DB_METHOD = "initingToDb";
+	
+	public static String INIT_TO_CACHE_METHOD = "initingToCache";
 	/**
-	 * 初始化方法
+	 * 初始化数据到数据库方法
 	 * @author max.zheng
 	 * @create 2014-9-25下午9:38:24
 	 * @modified by
 	 */
-	public void initing(BaseService<BaseModel> baseService);
+	public void initingToDb(BaseService<BaseModel> baseService);
+	/**
+	 * 初始化数据到缓存方法
+	 * @author max.zheng
+	 * @create 2014-9-25下午9:38:24
+	 * @modified by
+	 */
+	public void initingToCache(BaseService<BaseModel> baseService);
 
 }

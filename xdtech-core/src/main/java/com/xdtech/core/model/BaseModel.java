@@ -10,8 +10,10 @@ import javax.persistence.TemporalType;
 @MappedSuperclass
 public abstract class BaseModel {
 	
-	
-	@Column(name="CREATE_TIME")
+	/**
+	 * 记录创建时间不允许修改
+	 */
+	@Column(name="CREATE_TIME",updatable=false)
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date createTime;
 	

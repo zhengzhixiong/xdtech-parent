@@ -33,9 +33,12 @@ public class SysInitListener implements ApplicationListener {
 		String eventSource = event.getSource().toString();
 		if (eventSource.startsWith("Root WebApplicationContext:")) {
 //			Root WebApplicationContext: startup date [Thu Sep 25 21:17:58 CST 2014]; root of context hierarchy
-			if (PropertiesConfigurer.sysIsInitData()) {
-				System.out.println("spring 主配置文件加载完毕");
-				initSysData();
+			System.out.println("spring 主配置文件加载完毕");
+			if (PropertiesConfigurer.sysIsInitDataToDb()) {
+				initSysData(SysInitOperation.INIT_TO_DB_METHOD);
+			}
+			if (PropertiesConfigurer.sysIsInitDataToCache()) {
+				initSysData(SysInitOperation.INIT_TO_CACHE_METHOD);
 			}
 		}
 		else if (eventSource.startsWith("WebApplicationContext for namespace")) {
@@ -44,8 +47,8 @@ public class SysInitListener implements ApplicationListener {
 		}
 	}
 
-	private void initSysData() {
-		System.out.println("系统初始化数据.....");
+	private void initSysData(String method) {
+		System.out.println("系统初始化数据....."+method);
 		Object initObject = null;
 		Method convertMethod = null;
 		for (Class<?> c : ClassUtil.getClasses("com.xdtech")) {
@@ -53,7 +56,8 @@ public class SysInitListener implements ApplicationListener {
 				System.out.println(c.getName());
 				try {
 					initObject = c.newInstance();
-					convertMethod = c.getMethod(SysInitOperation.INIT_METHOD,BaseService.class);
+					convertMethod = c.getMethod(method
+							,BaseService.class);
 					convertMethod.invoke(initObject,baseService);
 				} catch (Exception e) {
 					log.error("system init data error",e);

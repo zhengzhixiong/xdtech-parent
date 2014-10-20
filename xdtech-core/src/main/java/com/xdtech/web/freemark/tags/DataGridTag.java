@@ -11,8 +11,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import org.apache.commons.lang.StringUtils;
-
 import com.xdtech.common.utils.JsonUtil;
 import com.xdtech.web.freemark.item.GridColumn;
 import com.xdtech.web.freemark.item.OperationItem;
@@ -22,13 +20,9 @@ import freemarker.template.TemplateDirectiveBody;
 import freemarker.template.TemplateException;
 
 /**
- * TODO 一句话功能简述，请确保和下面的block tags之间保留一行空行
- * <p>
- * TODO 功能详细描述，若不需要请连同上面的p标签一起删除
- * 
+ * easyui datagrid 自定义标签
  * @author <a href="max.zheng@zkteco.com">郑志雄</>
- * @version TODO 添加版本
- * @see 相关类或方法，不需要请删除此行
+ * @version 1.0.0
  * @since 2014-9-11 下午6:05:45
  */
 public class DataGridTag extends EasyUiTag
@@ -102,10 +96,11 @@ public class DataGridTag extends EasyUiTag
 					.append(addProperties("toolbar", params.get("toolbar"), true))
 					.append(addProperties("loadMsg", "数据加载中，请稍等...", true))
 					.append(addProperties("queryParams", "{time : new Date().getTime()}", false))
-					.append(addProperties("rownumbers", params.get("rownumbers"), false))
-					.append(addProperties("singleSelect", params.get("singleSelect"), false))
+					.append(addProperties("rownumbers", params.get("rownumbers")!= null ? params.get("rownumbers"):true, false))
+					.append(addProperties("singleSelect", params.get("singleSelect")!= null ? params.get("singleSelect"):true, false))
 					.append(addProperties("checkbox", params.get("checkbox"), false))
-					.append(addProperties("idField", params.get("idField"), true))
+					.append(addProperties("idField", params.get("idField")!= null ? params.get("idField"):"id", true))
+					.append(addEvent(params))
 					.append(createPagination(pagination))
 					.append(createColumns(className,params.get("idField")!=null,params.get("operations")))
 					.append("});");
@@ -128,14 +123,32 @@ public class DataGridTag extends EasyUiTag
 		}
 		catch (Exception e)
 		{
-			// TODO: handle exception
+			
 		}
 
 	}
 
 	
 
-	private Object createPagination(boolean pagination)
+	/**
+	 * 添加事件相关操作
+	 * @author max.zheng
+	 * @create 2014-9-29下午9:23:33
+	 * @modified by
+	 * @param params
+	 * @return
+	 */
+	private String addEvent(Map params) {
+		StringBuffer sb = new StringBuffer();
+		if (params.get("onClickRow")!=null) {
+			sb.append("onClickRow: function(rowIndex, rowData){"+params.get("onClickRow")+";},");
+		}
+		return sb.toString();
+	}
+
+
+
+	private String createPagination(boolean pagination)
 	{
 		StringBuffer sb = new StringBuffer();
 		if (pagination)

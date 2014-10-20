@@ -50,8 +50,13 @@ public class PropertiesConfigurer extends PropertyPlaceholderConfigurer {
 		return props.getProperty(key);
 	}
 
-	public static boolean sysIsInitData() {
-		String isInitData = props.getProperty("system.isInitData");
+	public static boolean sysIsInitDataToDb() {
+		String isInitData = props.getProperty("system.isInitDataToDb");
+		return isInitData != null ? Boolean.valueOf(isInitData) : false;
+	}
+	
+	public static boolean sysIsInitDataToCache() {
+		String isInitData = props.getProperty("system.isInitDataToCache");
 		return isInitData != null ? Boolean.valueOf(isInitData) : false;
 	}
 
