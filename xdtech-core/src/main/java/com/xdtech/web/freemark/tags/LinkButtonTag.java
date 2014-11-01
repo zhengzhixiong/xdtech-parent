@@ -16,9 +16,9 @@ public class LinkButtonTag extends EasyUiTag {
 		// iconCls="icon-add" plain="true" onclick="newUser()">New User</a>
 		StringBuffer sb = new StringBuffer();
 		sb.append("<a href=\"javascript:void(0)\" class=\"easyui-linkbutton\"")
-		  .append("iconCls=\""+params.get("iconCls").toString()+"\"")
-		  .append("plain=\"true\"")
-		  .append("onclick=\""+params.get("onclick")+"\"")
+		  .append(" iconCls=\""+params.get("iconCls").toString()+"\"")
+		  .append(" plain=\"true\"")
+		  .append(" onclick=\""+params.get("onclick")+"\"")
 		  .append(">")
 		  .append(params.get("showName"));
 		

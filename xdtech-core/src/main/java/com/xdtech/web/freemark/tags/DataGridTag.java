@@ -174,7 +174,7 @@ public class DataGridTag extends EasyUiTag
 			GridColumn gridColumn = field.getAnnotation(GridColumn.class);
 			if (gridColumn != null)
 			{
-				sb.append("{field:'" + field.getName() + "',title:'" + gridColumn.title()+"',");
+				sb.append("{field:'" + field.getName() + "',width:"+gridColumn.width()+",title:'" + gridColumn.title()+"',");
 				if (gridColumn.formatter()!=null&&gridColumn.formatter().length>0) {
 					sb.append("formatter:function(value, row, index) {");
 					for (int i = 0; i < gridColumn.formatter().length; i++) {

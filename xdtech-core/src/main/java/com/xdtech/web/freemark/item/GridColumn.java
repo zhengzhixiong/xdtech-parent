@@ -11,4 +11,6 @@ public @interface GridColumn {
 	public String title() default "";
 	
 	public String[] formatter() default {};
+	
+	public int width() default 80;
 }

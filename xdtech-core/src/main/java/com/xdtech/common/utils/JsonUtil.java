@@ -29,6 +29,25 @@ public class JsonUtil {
 	  }  
 	  return list;  
 	 }  
+	 
+	 /**   
+     * 从一个JSON数组得到一个java对象集合，其中对象中包含有集合属性   
+     * @param object   
+     * @param clazz   
+     * @param map 集合属性的类型   
+     * @return   
+     */    
+    public static Object getObjByJson(String jsonString, Class clazz, Map map){     
+    	setDataFormat2JAVA();     
+        JSONArray array = JSONArray.fromObject(jsonString);     
+        List list = new ArrayList();     
+        for(Iterator iter = array.iterator(); iter.hasNext();){     
+            JSONObject jsonObject = (JSONObject)iter.next();     
+            list.add(JSONObject.toBean(jsonObject, clazz, map));     
+        }     
+        return list.size()>0?list.get(0):null;        
+         
+    } 
 	 /**   
      * 从一个JSON数组得到一个java对象集合，其中对象中包含有集合属性   
      * @param object   
