@@ -21,8 +21,10 @@ public class TreeTag extends EasyUiTag {
 			String treeId = params.get("id") == null ? UUID.randomUUID().toString() : params.get("id").toString();
 			StringBuffer sb = new StringBuffer("<ul id=\"" + treeId + "\"></ul>");
 			sb.append("<script type=\"text/javascript\">")
+			  .append("var "+treeId+" = null;")
 			  .append("$(function() {")
-			  .append("$('#"+treeId+"').tree({")
+			  .append(treeId+" = $('#"+treeId+"');")
+			  .append(treeId+".tree({")
 			  .append(addProperties("method", params.get("method"), true))
 			  .append(addProperties("url", params.get("url"), true))
 			  .append(addProperties("checkbox", params.get("checkbox")==null?false:true, false))

@@ -1,5 +1,9 @@
 package com.xdtech.${moduleName}.vo;
 
+import java.io.Serializable;
+import java.util.Date;
+import java.sql.Timestamp;
+
 import com.xdtech.web.freemark.item.GridColumn;
 
 /**
@@ -20,11 +24,21 @@ public class ${modelName?cap_first}Item implements Serializable{
 </#list>
 
 <#list fields as field>
+	<#if field.type='Date'>
+	public void set${field.name?cap_first}(String ${field.name}) {
+		this.${field.name} = ${field.name};
+	}
+	public String get${field.name?cap_first}() {
+		return ${field.name};
+	}
+	<#else>
 	public void set${field.name?cap_first}(${field.type} ${field.name}) {
 		this.${field.name} = ${field.name};
 	}
 	public ${field.type} get${field.name?cap_first}() {
 		return ${field.name};
 	}
+	</#if>
+	
 </#list>
 }

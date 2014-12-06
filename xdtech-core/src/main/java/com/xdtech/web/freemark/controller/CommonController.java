@@ -14,11 +14,16 @@
  */
 package com.xdtech.web.freemark.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.xdtech.core.init.InitCacheData;
+import com.xdtech.core.orm.utils.BeanUtils;
+import com.xdtech.web.model.ComboBox;
 
 /**
  * 
@@ -33,8 +38,15 @@ public class CommonController {
 	
 	@RequestMapping(params = "loadComboBox")
 	@ResponseBody
-	public Object loadComboBox(String key) {
-		return InitCacheData.dictionary.get(key);
+	public Object loadComboBox(String key,String value) {
+		List items = InitCacheData.dictionary.get(key);
+		List<ComboBox> comboBoxs = BeanUtils.copyListProperties(ComboBox.class, items);
+		for (ComboBox comboBox : comboBoxs) {
+			if (comboBox.getValue().equals(value)) {
+				comboBox.setSelected(true);
+			}
+		}
+		return comboBoxs;
 	}
 
 }

@@ -157,22 +157,7 @@ public class BaseDao<BaseModel> extends HibernateDao<BaseModel, Long> implements
 		return query;
 	}
 	
-	/**
-	 * 根据查询SQL与参数列表创建Query对象.
-	 * 与find()函数可进行更加灵活的操作.
-	 * @param sqlQueryString sql语句
-	 * 
-	 * @param values 数量可变的参数,按顺序绑定.
-	 */
-	public Query createSQLQuery(final String sqlQueryString, final Object... values) {
-		Query query = getSession().createSQLQuery(sqlQueryString);
-		if (values != null) {
-			for (int i = 0; i < values.length; i++) {
-				query.setParameter(i, values[i]);
-			}
-		}
-		return query;
-	}
+	
 	
 	/**
 	 * 按SQL查询对象列表,并将结果集转换成指定的对象列表

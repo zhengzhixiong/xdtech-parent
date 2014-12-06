@@ -12,5 +12,6 @@ public class EasyTags extends SimpleHash {
         put("searchbox", new SearchBoxTag());
         put("tree", new TreeTag());
         put("comboBox", new ComboBoxTag());
+        put("comboTree", new ComboTreeTag());
     }
 }

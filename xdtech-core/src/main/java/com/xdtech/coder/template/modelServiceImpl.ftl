@@ -1,4 +1,4 @@
-package com.xdtech.${moduleName}.service;
+package com.xdtech.${moduleName}.service.impl;
 
 import java.util.HashMap;
 import java.util.List;
@@ -12,6 +12,7 @@ import com.xdtech.core.orm.Page;
 import com.xdtech.core.orm.utils.BeanUtils;
 import com.xdtech.${moduleName}.dao.${modelName?cap_first}Dao;
 import com.xdtech.${moduleName}.model.${modelName?cap_first};
+import com.xdtech.${moduleName}.service.${modelName?cap_first}Service;
 import com.xdtech.${moduleName}.vo.${modelName?cap_first}Item;
 import com.xdtech.web.model.Pagination;
 
@@ -104,7 +105,7 @@ public class ${modelName?cap_first}ServiceImpl implements ${modelName?cap_first}
 					${modelName?cap_first}Item.class, page.getResult());
 			rows = page.getTotalItems();
 		}else {
-			List<${modelName?cap_first}> ${modelName}List = newDao.find("from ${modelName?cap_first} order by id desc", values);
+			List<${modelName?cap_first}> ${modelName}List = ${modelName}Dao.find("from ${modelName?cap_first} order by id desc", values);
 			${modelName}s = BeanUtils.copyListProperties(
 					${modelName?cap_first}Item.class, ${modelName}List);
 			rows = ${modelName}s.size();
@@ -131,7 +132,7 @@ public class ${modelName?cap_first}ServiceImpl implements ${modelName?cap_first}
 		}
 		//复制前台修改的属性
 		BeanUtils.copyProperties(${modelName}, item);
-		newDao.save(${modelName});
+		${modelName}Dao.save(${modelName});
 		return true;
 	}
 
@@ -144,7 +145,7 @@ public class ${modelName?cap_first}ServiceImpl implements ${modelName?cap_first}
 	 * @return
 	 */
 	public ${modelName?cap_first}Item load${modelName?cap_first}Item(Long ${modelName}Id) {
-		${modelName?cap_first} ${modelName} = ${moduleName}Dao.get(${modelName}Id);
+		${modelName?cap_first} ${modelName} = ${modelName}Dao.get(${modelName}Id);
 		${modelName?cap_first}Item ${modelName}Item = new ${modelName?cap_first}Item();
 		BeanUtils.copyProperties(${modelName}Item, ${modelName});
 		return ${modelName}Item;
@@ -160,6 +161,21 @@ public class ${modelName?cap_first}ServiceImpl implements ${modelName?cap_first}
 	 */
 	public boolean delete${modelName?cap_first}Info(long id) {
 		delete(id);
+		return true;
+	}
+	
+	/**
+	 * @description
+	 * @author max.zheng
+	 * @create ${createTime}
+	 * @modified by
+	 * @param newIds
+	 * @return
+	 */
+	public boolean delete${modelName?cap_first}Info(List<Long> ${modelName}Ids) {
+		for (Long id : ${modelName}Ids) {
+			delete(id);
+		}
 		return true;
 	}
 

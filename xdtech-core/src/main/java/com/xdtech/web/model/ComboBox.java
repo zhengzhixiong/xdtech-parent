@@ -11,9 +11,16 @@ public class ComboBox {
 
 	private String code;
 	private String text;
+	private String value;
+	private String name;
 	private boolean selected;
 	
 	
+
+	public ComboBox() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
 
 	public ComboBox(boolean initNullSelect) {
 		super();
@@ -54,4 +61,21 @@ public class ComboBox {
 	public void setSelected(boolean selected) {
 		this.selected = selected;
 	}
+
+	public String getValue() {
+		return value;
+	}
+
+	public void setValue(String value) {
+		this.value = value;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+	
 }

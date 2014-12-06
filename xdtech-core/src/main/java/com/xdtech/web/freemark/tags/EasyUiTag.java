@@ -30,6 +30,33 @@ public abstract class EasyUiTag extends SecureTag{
 		}
 		return rs.toString();
 	}
+	/**
+	 * 
+	 * 
+	 * @author max.zheng
+	 * @create 2014-11-30上午10:31:19
+	 * @modified by
+	 * @param propName
+	 * @param propValue
+	 * @param defaultValue
+	 * @param hasColon
+	 * @return
+	 */
+	protected String addProperties(String propName, Object propValue,Object defaultValue,boolean hasColon) {
+		StringBuffer rs = new StringBuffer("");
+		if (propValue==null||"".equals(propValue)) {
+			propValue = defaultValue;
+		}
+		if (propValue!=null) {
+			rs.append(propName+":");
+			if (hasColon) {
+				rs.append("'"+propValue+"',");
+			}else {
+				rs.append(propValue+",");
+			}
+		}
+		return rs.toString();
+	}
 	
 	protected void writeBody(Environment env,String content) throws IOException {
         if (env != null) {

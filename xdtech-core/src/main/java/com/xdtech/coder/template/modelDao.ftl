@@ -3,7 +3,7 @@ package com.xdtech.${moduleName}.dao;
 import org.springframework.stereotype.Repository;
 
 import com.xdtech.core.orm.hibernate.HibernateDao;
-import com.xdtech.message.model.New;
+import com.xdtech.${moduleName}.model.${modelName?cap_first};
 
 /**
  * 

@@ -11,6 +11,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import org.apache.commons.lang.StringUtils;
+import org.apache.shiro.SecurityUtils;
+
 import com.xdtech.common.utils.JsonUtil;
 import com.xdtech.web.freemark.item.GridColumn;
 import com.xdtech.web.freemark.item.OperationItem;
@@ -93,6 +96,8 @@ public class DataGridTag extends EasyUiTag
 					.append(addProperties("title",params.get("title"),true))
 					.append(addProperties("striped", "false", true))
 					.append(addProperties("fit", "true", false))
+					.append(addProperties("selectOnCheck", params.get("selectOnCheck")!= null ? params.get("selectOnCheck"):false, false))//勾选checkbox自动选中当前行，默认是false
+					.append(addProperties("checkOnSelect", params.get("checkOnSelect")!= null ? params.get("checkOnSelect"):false, false))//选中当前行自动勾选checkbox，默认是false
 					.append(addProperties("toolbar", params.get("toolbar"), true))
 					.append(addProperties("loadMsg", "数据加载中，请稍等...", true))
 					.append(addProperties("queryParams", "{time : new Date().getTime()}", false))
@@ -195,12 +200,15 @@ public class DataGridTag extends EasyUiTag
 			}
 		}
 		
-		if (operations!=null) {
+		if (operations!=null&&!operations.toString().trim().equals("")) {
 			List<OperationItem> items = JsonUtil.getDTOList(operations.toString(), OperationItem.class);
 			StringBuffer operationItems = new StringBuffer("var rowId = row.id;var str = '';str +='");
 			for (OperationItem item : items) {
 //				<img  onclick=\"lookUserInfo('+rowId+')\" src=\"plugins/xdtech/images/notes/note.png\" title=\"查看\"/>
-				operationItems.append("<img  onclick=\""+item.getOnClick()+"('+rowId+')\" src=\""+item.getSrc()+"\" title=\""+item.getTitle()+"\"/>&nbsp;");
+				//权限过滤
+				if (StringUtils.isEmpty(item.getShiro())||(SecurityUtils.getSubject().isPermitted(item.getShiro()))) {
+					operationItems.append("<img  onclick=\""+item.getOnClick()+"('+rowId+')\" src=\""+item.getSrc()+"\" title=\""+item.getTitle()+"\"/>&nbsp;");
+				}
 			}
 			operationItems.append("';return str;");
 			sb.append("{field :'action',title : '操作',width : 200,formatter : function(value, row, index) {"+operationItems+"}},");

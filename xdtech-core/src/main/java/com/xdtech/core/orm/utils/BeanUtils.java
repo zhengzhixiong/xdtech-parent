@@ -68,6 +68,7 @@ public class BeanUtils {
 			e.printStackTrace();
 		} catch (InstantiationException e) {
 			// TODO: handle exception
+			e.printStackTrace();
 		}
 		return null;
 	}

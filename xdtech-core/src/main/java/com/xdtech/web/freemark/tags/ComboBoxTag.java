@@ -60,11 +60,13 @@ public class ComboBoxTag extends EasyUiTag {
 		StringBuffer sb = new StringBuffer();
 		String id = params.get("id")==null?UUID.randomUUID().toString():params.get("id").toString();
 		String name = params.get("name")==null?"none":params.get("name").toString();
-		sb.append("<input id=\""+id+"\" class=\"easyui-combobox\" name=\""+name+"\"")
+		String width = params.get("width")==null?"159":params.get("width").toString();
+		sb.append("<input id=\""+id+"\" style=\"width:"+width+"px;\" class=\"easyui-combobox\" name=\""+name+"\"")
 		  .append(" data-options=\"")
+//		  .append(addProperties("width", params.get("width")==null?"150":params.get("width"), false))
 		  .append(addProperties("url", params.get("url"), true))
-		  .append(addProperties("valueField", params.get("valueField")==null?"id":params.get("valueField"), true))
-		  .append(addProperties("textField", params.get("textField")==null?"text":params.get("textField"), true))
+		  .append(addProperties("valueField", params.get("valueField")==null?"value":params.get("valueField"), true))
+		  .append(addProperties("textField", params.get("textField")==null?"name":params.get("textField"), true))
 		  .append("\"/>");
 		writeBody(env, sb.toString());
 	}

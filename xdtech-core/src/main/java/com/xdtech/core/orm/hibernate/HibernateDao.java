@@ -371,4 +371,17 @@ public class HibernateDao<T, ID extends Serializable> extends SimpleHibernateDao
 		}
 		return criterionList.toArray(new Criterion[criterionList.size()]);
 	}
+	
+	/**
+	 * 执行更新数据库操作
+	 * 
+	 * @author max.zheng
+	 * @create 2014-11-30下午8:36:53
+	 * @modified by
+	 * @param sql
+	 * @return
+	 */
+	public int excuteUpdateBySql(String sql) {
+		return createSQLQuery(sql).executeUpdate();
+	}
 }

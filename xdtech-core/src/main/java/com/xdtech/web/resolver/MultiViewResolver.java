@@ -12,7 +12,7 @@ public class MultiViewResolver implements ViewResolver {
 
 	public View resolveViewName(String viewName, Locale locale)
 			throws Exception {
-		if (viewName.contains("jsp") || viewName.contains("ftl")) {
+		if (viewName.contains("jsp") || viewName.contains("ftl")||viewName.contains("jrxml")) {
 			int n = viewName.lastIndexOf("_"); // 获取
 			// viewName(modelAndView中的名字)看其有没有下划线
 			if (n == (-1)) {

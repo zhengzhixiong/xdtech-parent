@@ -1,16 +1,16 @@
 <#macro elementType field>
 	<#switch field.type>
 		<#case "String">
-			<input name="${field.name}"  class="easyui-validatebox" data-options="required: ${field.formField?c},value: '<#noparse>${</#noparse>(${modelName}Item.${field.name})<#noparse>!}</#noparse>', width: 200" />
+			<input name="${field.name}"  class="easyui-validatebox" data-options="required: ${field.formField?c}" value="<#noparse>${</#noparse>(${modelName}Item.${field.name})<#noparse>!}</#noparse>"/>
 			<#break>
 		<#case "Long">
-			<input name="${field.name}"  class="easyui-numberbox" data-options="required: ${field.formField?c},value: '<#noparse>${</#noparse>(${modelName}Item.${field.name})<#noparse>!}</#noparse>', width: 200" />
+			<input name="${field.name}"  class="easyui-numberbox" data-options="required: ${field.formField?c}" value="<#noparse>${</#noparse>(${modelName}Item.${field.name})<#noparse>!}</#noparse>" />
 			<#break>
 		<#case "Date">
-			<input name="${field.name}"  class="easyui-datetimebox" data-options="required: ${field.formField?c},value: '<#noparse>${</#noparse>(${modelName}Item.${field.name})<#noparse>!}</#noparse>', width: 200" />
+			<input name="${field.name}"  class="easyui-datetimebox" data-options="required: ${field.formField?c},width:160" value="<#noparse>${</#noparse>(${modelName}Item.${field.name})<#noparse>!}</#noparse>" />
 			<#break>
 		<#default>
-			<input name="${field.name}"  class="easyui-validatebox" data-options="required: ${field.formField?c},value: '<#noparse>${</#noparse>(${modelName}Item.${field.name})<#noparse>!}</#noparse>', width: 200" />
+			<input name="${field.name}"  class="easyui-validatebox" data-options="required: ${field.formField?c},width:160" value="<#noparse>${</#noparse>(${modelName}Item.${field.name})<#noparse>!}</#noparse>" />
 	</#switch>
 	<#compress></#compress>
 </#macro>

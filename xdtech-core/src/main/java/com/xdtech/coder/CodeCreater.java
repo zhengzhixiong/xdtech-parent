@@ -75,6 +75,7 @@ public class CodeCreater {
 	
 	public static boolean create(Coder coder) {
 		boolean rs = true;
+		rootMap.clear();
 		moduleName = coder.getModuleName();
 		modelName = coder.getModelName();
 		tableName = coder.getTableName();
@@ -93,10 +94,10 @@ public class CodeCreater {
 		try {
 			init();
 			processModel();
+			processDao();
+			processService();
 			processModelItem();
 			processController();
-			processService();
-			processDao();
 			
 			processModelHtml();
 			processModelEditHtml();
@@ -199,9 +200,13 @@ public class CodeCreater {
 	 * @create 2014-10-28下午11:05:17
 	 * @modified by
 	 */
-	private static void processController() {
-		// TODO Auto-generated method stub
-		
+	private static void processController() throws Exception {
+		Template template = cfg.getTemplate("modelController.ftl");
+		String javaModelUrl = fileUrl + "/" + toUpperCaseFirstOne(modelName) + "Controller.java";
+		File javaModelFile = new File(javaModelUrl);
+		// 合并处理（模板 + 数据模型）
+		template.process(rootMap, new OutputStreamWriter(new FileOutputStream(
+				javaModelFile)));
 	}
 
 	// 初始化工作
