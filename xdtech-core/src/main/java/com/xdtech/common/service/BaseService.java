@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.xdtech.core.dao.BaseDao;
+import com.xdtech.core.model.BaseCondition;
 import com.xdtech.core.model.BaseModel;
 import com.xdtech.web.model.Pagination;
 @Service
@@ -50,6 +51,10 @@ public class BaseService<T extends BaseModel>  {
 	}
 	
 	public Map<String, Object> loadPageAndCondition(Pagination pg,final Map<String,String> values) {
+		return new HashMap<String, Object>();
+	}
+	
+	public Map<String, Object> loadPageAndCondition(Pagination pg,final BaseCondition condition) {
 		return new HashMap<String, Object>();
 	}
 	

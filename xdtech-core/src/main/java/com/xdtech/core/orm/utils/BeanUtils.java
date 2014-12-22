@@ -1,6 +1,5 @@
 package com.xdtech.core.orm.utils;
 
-import java.lang.reflect.InvocationTargetException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -84,6 +83,8 @@ public class BeanUtils {
 	public static void copyProperties(Object dest, Object orig)
 			throws RuntimeException {
 		try {
+			//避免Date类型的转化器被quartz里dateConver覆盖，这里强制每次注册
+		    ConvertUtils.register(new UtilDateConverter(null) , java.util.Date.class);
 			org.apache.commons.beanutils.BeanUtils.copyProperties(dest, orig);
 		} catch (Exception ex) {
 			throw new RuntimeException(ex);
@@ -202,7 +203,7 @@ public class BeanUtils {
 			 ConvertUtils.register(new MyIntegerConverter(null), Integer.class);
 			 ConvertUtils.register(new MyLongConverter(null), Long.class);
 			 ConvertUtils.register(new MyDoubleConverter(null), Double.class);
-           //新增Date类型的转化器
+             //新增Date类型的转化器
 		     ConvertUtils.register(new UtilDateConverter(null) , java.util.Date.class);
 			 registered = true;
 		}

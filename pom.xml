@@ -364,7 +364,11 @@
 			<artifactId>httpclient</artifactId>
 			<version>${httpclient.version}</version>
 		</dependency>
-		
+		<dependency>
+			 <groupId>javax.mail</groupId>
+   			 <artifactId>mail</artifactId>
+			<version>1.4.6</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<pluginManagement>

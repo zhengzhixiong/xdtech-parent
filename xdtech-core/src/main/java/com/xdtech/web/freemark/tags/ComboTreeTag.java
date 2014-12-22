@@ -54,7 +54,7 @@ public class ComboTreeTag extends EasyUiTag {
 		String name = params.get("name")==null?"none":params.get("name").toString();
 		String width = params.get("width")==null?"159":params.get("width").toString();
 		String multiple = params.get("multiple")==null?"":params.get("multiple").toString();
-		String required = params.get("required")==null?"false":params.get("multiple").toString();
+		String required = params.get("required")==null?"false":params.get("required").toString();
 //		sb.append("<input id=\""+id+"\" style=\"width:"+width+"px;\" class=\"easyui-combotree\" name=\""+name+"\"")
 //		  .append(" "+multiple)
 //		  .append(" data-options=\"")
@@ -89,8 +89,8 @@ public class ComboTreeTag extends EasyUiTag {
 		  .append("onChange : function(a, b) {")
 		  .append("$('#"+id+"hidden').val( $('#"+id+"').combotree('getValues'));")
 		  .append("},")
-		  .append(addProperties("required", params.get("required"),false, true))
-		  .append(addProperties("multiple", params.get("multiple"),false, true))
+		  .append(addProperties("required", params.get("required"),false, false))
+		  .append(addProperties("multiple", params.get("multiple"),false, false))
 		  .append("});")
 		  .append("});")
 		  .append("</script>");

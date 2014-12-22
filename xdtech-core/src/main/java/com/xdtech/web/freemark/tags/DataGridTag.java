@@ -184,13 +184,14 @@ public class DataGridTag extends EasyUiTag
 					sb.append("formatter:function(value, row, index) {");
 					for (int i = 0; i < gridColumn.formatter().length; i++) {
 						String kv = gridColumn.formatter()[i];
-						String[] kval = kv.split("=");
+						String[] kval = kv.split("=",2);
+//						kval[1] = kval[1].replaceAll("", replacement)
 						if (i==0) {
-							sb.append("if (value=='"+kval[0]+"') { return \""+kval[1]+"\"; }"); 
+							sb.append("if (value=='"+kval[0]+"') { return '"+kval[1]+"'; }"); 
 						}else if (showChecked) {
-							sb.append("else if (value=='"+kval[0]+"') { return \""+kval[1]+"\"; }"); 
+							sb.append("else if (value=='"+kval[0]+"') { return '"+kval[1]+"'; }"); 
 						}else {
-							sb.append("else { return \"--\";}");
+							sb.append("else { return '--';}");
 						}
 					
 					}

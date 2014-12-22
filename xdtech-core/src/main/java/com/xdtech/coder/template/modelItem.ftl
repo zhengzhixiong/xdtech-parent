@@ -18,7 +18,7 @@ public class ${modelName?cap_first}Item implements Serializable{
 <#list fields as field>
 	<#if field.name='id'>
 	<#else>
-	@GridColumn(title="${field.showName}")
+	@GridColumn(title="${field.showName}",width=100)
 	</#if>
 	private ${field.type} ${field.name};
 </#list>
