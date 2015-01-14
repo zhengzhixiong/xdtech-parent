@@ -55,6 +55,10 @@ public class PropertiesConfigurer extends PropertyPlaceholderConfigurer {
 		return isInitData != null ? Boolean.valueOf(isInitData) : false;
 	}
 	
+	public static void setAlreadyInitDataToDb() {
+		props.setProperty("system.isInitDataToDb", "true");
+	}
+	
 	public static boolean sysIsInitDataToCache() {
 		String isInitData = props.getProperty("system.isInitDataToCache");
 		return isInitData != null ? Boolean.valueOf(isInitData) : false;

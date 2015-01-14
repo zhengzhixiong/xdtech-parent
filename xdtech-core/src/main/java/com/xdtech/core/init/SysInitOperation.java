@@ -4,7 +4,7 @@
  */
 package com.xdtech.core.init;
 
-import com.xdtech.common.service.BaseService;
+import com.xdtech.common.service.impl.BaseService;
 import com.xdtech.core.model.BaseModel;
 
 /**

@@ -1,4 +1,4 @@
-package com.xdtech.common.service;
+package com.xdtech.common.service.impl;
 
 import java.util.HashMap;
 import java.util.List;
@@ -6,14 +6,12 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.xdtech.core.dao.BaseDao;
 import com.xdtech.core.model.BaseCondition;
 import com.xdtech.core.model.BaseModel;
 import com.xdtech.web.model.Pagination;
 @Service
-@Transactional
 public class BaseService<T extends BaseModel>  {
 	
 	protected BaseDao<T> baseDao;
@@ -48,6 +46,10 @@ public class BaseService<T extends BaseModel>  {
 	@Autowired
 	public void setBaseDao(BaseDao<T> baseDao) {
 		this.baseDao = baseDao;
+	}
+	
+	public void execute(String sql) {
+		baseDao.excuteUpdateBySql(sql);
 	}
 	
 	public Map<String, Object> loadPageAndCondition(Pagination pg,final Map<String,String> values) {

@@ -8,7 +8,7 @@ import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
 
-import com.xdtech.common.service.BaseService;
+import com.xdtech.common.service.impl.BaseService;
 import com.xdtech.common.utils.ClassUtil;
 import com.xdtech.core.config.PropertiesConfigurer;
 import com.xdtech.core.init.SysInitOperation;
@@ -27,6 +27,7 @@ public class SysInitListener implements ApplicationListener {
 	@Autowired
 	private BaseService<BaseModel> baseService;
 	
+	
 	private Logger log = Logger.getLogger(getClass());
 
 	public void onApplicationEvent(ApplicationEvent event) {
@@ -36,6 +37,7 @@ public class SysInitListener implements ApplicationListener {
 			System.out.println("spring 主配置文件加载完毕");
 			if (PropertiesConfigurer.sysIsInitDataToDb()) {
 				initSysData(SysInitOperation.INIT_TO_DB_METHOD);
+				PropertiesConfigurer.setAlreadyInitDataToDb();
 			}
 			if (PropertiesConfigurer.sysIsInitDataToCache()) {
 				initSysData(SysInitOperation.INIT_TO_CACHE_METHOD);

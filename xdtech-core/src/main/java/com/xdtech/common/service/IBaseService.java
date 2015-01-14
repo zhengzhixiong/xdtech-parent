@@ -1,4 +1,4 @@
-package com.xdtech.common.service.impl;
+package com.xdtech.common.service;
 
 import java.util.List;
 import java.util.Map;

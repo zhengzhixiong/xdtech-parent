@@ -24,7 +24,6 @@ import com.xdtech.web.model.Pagination;
  * @see
  */
 @Service
-@Transactional
 public class ${modelName?cap_first}ServiceImpl implements ${modelName?cap_first}Service {
 	@Autowired
 	private ${modelName?cap_first}Dao ${modelName}Dao;

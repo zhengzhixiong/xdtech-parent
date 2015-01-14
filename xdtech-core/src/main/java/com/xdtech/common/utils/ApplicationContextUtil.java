@@ -15,7 +15,7 @@ public class ApplicationContextUtil implements ApplicationContextAware {
 
 	private static ApplicationContext context;
 	
-//	private static ServletContext application;
+	private static ServletContext application;
 
 	
 	public void setApplicationContext(ApplicationContext context)
@@ -27,13 +27,13 @@ public class ApplicationContextUtil implements ApplicationContextAware {
 		return context;
 	}
 
-//	public static ServletContext getApplication() {
-//		return application;
-//	}
-//
-//	public static void setApplication(ServletContext application) {
-//		ApplicationContextUtil.application = application;
-//	}
+	public static ServletContext getApplication() {
+		return application;
+	}
+
+	public static void setApplication(ServletContext application) {
+		ApplicationContextUtil.application = application;
+	}
 	
 	
 }

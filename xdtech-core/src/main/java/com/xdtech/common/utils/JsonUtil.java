@@ -1,6 +1,7 @@
 package com.xdtech.common.utils;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -9,7 +10,10 @@ import java.util.Map;
 import net.sf.ezmorph.object.DateMorpher;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+import net.sf.json.JsonConfig;
 import net.sf.json.util.JSONUtils;
+
+import com.mysql.jdbc.Util;
 
 public class JsonUtil {
 	 /** 
@@ -169,24 +173,24 @@ public class JsonUtil {
       * @return 
       * @throws Exception String 
       */  
-//     public static String getJsonStr(Object obj) {  
-//         String jsonStr = null;  
-//         //Json配置      
-//         JsonConfig jsonCfg = new JsonConfig();  
-//   
-//         //注册日期处理器  
+     public static String getJsonStr(Object obj) {  
+         String jsonStr = null;  
+         //Json配置      
+         JsonConfig jsonCfg = new JsonConfig();  
+   
+         //注册日期处理器  
 //         jsonCfg.registerJsonValueProcessor(java.util.Date.class,  
 //                 new JsonDateValueProcessor(Util.YYYY_MM_DD_HH_MM_ss));  
-//         if (obj == null) {  
-//             return "{}";  
-//         }  
-//   
-//         if (obj instanceof Collection || obj instanceof Object[]) {  
-//             jsonStr = JSONArray.fromObject(obj, jsonCfg).toString();  
-//         } else {  
-//             jsonStr = JSONObject.fromObject(obj, jsonCfg).toString();  
-//         }  
-//   
-//         return jsonStr;  
-//     }  
+         if (obj == null) {  
+             return "{}";  
+         }  
+   
+         if (obj instanceof Collection || obj instanceof Object[]) {  
+             jsonStr = JSONArray.fromObject(obj, jsonCfg).toString();  
+         } else {  
+             jsonStr = JSONObject.fromObject(obj, jsonCfg).toString();  
+         }  
+   
+         return jsonStr;  
+     }  
 }

@@ -728,6 +728,7 @@ public class DateUtil {
         MM_DD_EN("MM/dd"),
         YYYY_MM_EN("yyyy/MM"),
         YYYY_MM_DD_EN("yyyy/MM/dd"),
+        MM_DD_YYYY_EN("MM/dd/yyyy"),
         MM_DD_HH_MM_EN("MM/dd HH:mm"),
         MM_DD_HH_MM_SS_EN("MM/dd HH:mm:ss"),
         YYYY_MM_DD_HH_MM_EN("yyyy/MM/dd HH:mm"),

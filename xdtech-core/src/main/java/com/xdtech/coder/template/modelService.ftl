@@ -2,7 +2,7 @@ package com.xdtech.${moduleName}.service;
 
 import java.util.List;
 
-import com.xdtech.common.service.impl.IBaseService;
+import com.xdtech.common.service.IBaseService;
 import com.xdtech.${moduleName}.model.${modelName?cap_first};
 import com.xdtech.${moduleName}.vo.${modelName?cap_first}Item;
 

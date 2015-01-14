@@ -187,9 +187,9 @@ public class DataGridTag extends EasyUiTag
 						String[] kval = kv.split("=",2);
 //						kval[1] = kval[1].replaceAll("", replacement)
 						if (i==0) {
-							sb.append("if (value=='"+kval[0]+"') { return '"+kval[1]+"'; }"); 
+							sb.append("if ((value+'')=='"+kval[0]+"') { return '"+kval[1]+"'; }"); 
 						}else if (showChecked) {
-							sb.append("else if (value=='"+kval[0]+"') { return '"+kval[1]+"'; }"); 
+							sb.append("else if ((value+'')=='"+kval[0]+"') { return '"+kval[1]+"'; }"); 
 						}else {
 							sb.append("else { return '--';}");
 						}
