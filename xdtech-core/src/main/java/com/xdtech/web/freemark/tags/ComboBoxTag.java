@@ -65,6 +65,7 @@ public class ComboBoxTag extends EasyUiTag {
 		  .append(" data-options=\"")
 //		  .append(addProperties("width", params.get("width")==null?"150":params.get("width"), false))
 		  .append(addProperties("url", params.get("url"), true))
+		  .append(addProperties("required", params.get("required")==null?"false":params.get("required"), false))
 		  .append(addProperties("valueField", params.get("valueField")==null?"value":params.get("valueField"), true))
 		  .append(addProperties("textField", params.get("textField")==null?"name":params.get("textField"), true))
 		  .append("\"/>");

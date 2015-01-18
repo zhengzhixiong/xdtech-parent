@@ -48,8 +48,12 @@ public class BaseService<T extends BaseModel>  {
 		this.baseDao = baseDao;
 	}
 	
-	public void execute(String sql) {
+	public void executeUpdateBySql(String sql) {
 		baseDao.excuteUpdateBySql(sql);
+	}
+	
+	public Object executeSql(String sql,Object... values) {
+		return baseDao.excuteSql(sql, values);
 	}
 	
 	public Map<String, Object> loadPageAndCondition(Pagination pg,final Map<String,String> values) {

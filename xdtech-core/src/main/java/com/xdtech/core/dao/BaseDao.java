@@ -2,6 +2,7 @@ package com.xdtech.core.dao;
 
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,6 +13,7 @@ import org.hibernate.SQLQuery;
 import org.hibernate.transform.Transformers;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.xdtech.core.dao.dynamic.AddScalar;
@@ -35,7 +37,13 @@ public class BaseDao<BaseModel> extends HibernateDao<BaseModel, Long> implements
 	 */
 	protected Map<String, StatementTemplate> templateCache;
 	protected DynamicHibernateStatementBuilder dynamicStatementBuilder;
-	
+	protected JdbcTemplate jdbcTemplate;
+	@Autowired
+	public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
+		this.jdbcTemplate = jdbcTemplate;
+	}
+
+
 	@Autowired
 	public void setDynamicStatementBuilder(DynamicHibernateStatementBuilder dynamicStatementBuilder) {
 		this.dynamicStatementBuilder = dynamicStatementBuilder;
@@ -240,5 +248,64 @@ public class BaseDao<BaseModel> extends HibernateDao<BaseModel, Long> implements
 	public <X> List<X> findBySQLItem(final String sql,BaseItem baseItem, final Object... values) {
 		List<X> result = createSQLQuery(sql,baseItem.getClass(),baseItem.getQueryFields(), values).list();
 		return result;
+	}
+	
+	/**
+	 * 
+	 * @param pageRequest 页查询信息
+	 * @param queryName   查询的sql语句名称，由xml里配置
+	 * @param baseCondition 查询条件，如果是查询item的时候需要设置对应item，查询model可不用
+	 * @return 页集合信息
+	 */
+	public Page findPageBySql(final PageRequest pageRequest,final String sql,final BaseCondition baseCondition) {
+		AssertUtils.notNull(pageRequest, "page不能为空");
+		Page page = new Page(pageRequest);
+//		StatementTemplate statementTemplate = templateCache.get(queryName);
+//		Map<String, String> parameters = baseCondition!=null?baseCondition.getQueryConditions():null;
+//		String statement = processTemplate(statementTemplate,parameters);
+		Query q = null;
+		if (pageRequest.isCountTotal()) {
+			long totalCount = 0;
+//			if (StatementTemplate.SQL.equals(statementTemplate.getSqlType())) {
+				totalCount = countSqlResult(sql);
+				q = createSQLQuery(sql);
+//				if (baseCondition.isItem()) {
+//					q = createSQLQuery(statement,baseCondition.getBaseItem().getClass(),baseCondition.getBaseItem().getQueryFields());
+//				}
+//			}else if (StatementTemplate.HQL.equals(statementTemplate.getSqlType())) {
+//				totalCount = countHqlResult(statement);
+//				q = createHqlQuery(statement);
+//			}
+			page.setTotalItems(totalCount);
+		}
+		 
+		setPageParameterToQuery(q, pageRequest);
+		List result = q.list();
+		page.setResult(result);
+		return page;
+	}
+	
+	public Page excuteQuerySqlByJdbc(final PageRequest pageRequest,final String sql,Object... args) {
+		Page page = new Page(pageRequest);
+		long totalCount = jdbcTemplate.queryForLong(crateJdbcCountSql(sql));
+		page.setTotalItems(totalCount);
+		List<Map<String, Object>> rsList = new ArrayList<Map<String,Object>>();
+		if (totalCount>0) {
+			rsList = jdbcTemplate.queryForList(createJdbcPageSql(pageRequest, sql), args); 
+		}	
+		page.setResult(rsList);
+		return page;
+	}
+	
+	private String crateJdbcCountSql(final String sql) {
+		return "select count(*) from ("+sql+") AS temp";
+	}
+	
+	private String createJdbcPageSql(final PageRequest pageRequest,final String sql) {
+		StringBuffer sb = new StringBuffer(sql);
+		int benginIndex = (pageRequest.getPage()-1)*pageRequest.getRows();
+		int endIndex = pageRequest.getPage()*pageRequest.getRows();
+		sb.append(" limit "+benginIndex+","+endIndex);
+		return sb.toString();
 	}
 }

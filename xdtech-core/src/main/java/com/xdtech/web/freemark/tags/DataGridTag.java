@@ -118,7 +118,7 @@ public class DataGridTag extends EasyUiTag
 			      .append("});");   
 			}
 			//添加列表默认刷新方法
-			sb.append("function "+tableId+"_refresh() { tableId.datagrid('reload'); }");
+			sb.append("function "+tableId+"_refresh() { "+tableId+".datagrid('reload'); }");
 			
 			
 			sb.append("});");

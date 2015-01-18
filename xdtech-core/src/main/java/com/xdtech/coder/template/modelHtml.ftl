@@ -81,7 +81,7 @@
 			id = rows[0].id;
 		}
 		if (id) {
-			createFromWindow("编辑消息信息", "${modelName}.do?edit${modelName?cap_first}&${modelName}Id=" + id,
+			createFromWindow("编辑信息", "${modelName}.do?edit${modelName?cap_first}&${modelName}Id=" + id,
 					"${modelName}.do?save${modelName?cap_first}", function(data) {
 						reload${modelName?cap_first}();
 					},true);

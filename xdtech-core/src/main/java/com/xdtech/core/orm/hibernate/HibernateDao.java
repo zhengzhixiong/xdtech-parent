@@ -380,8 +380,27 @@ public class HibernateDao<T, ID extends Serializable> extends SimpleHibernateDao
 	 * @modified by
 	 * @param sql
 	 * @return
-	 */
+	 */ 
 	public int excuteUpdateBySql(String sql) {
 		return createSQLQuery(sql).executeUpdate();
 	}
+	/**
+	 * Ö´ÐÐsqlÓï¾ä
+	 * 
+	 * @author max.zheng
+	 * @create 2015-1-14ÏÂÎç10:36:41
+	 * @modified by
+	 * @param sqlQueryString
+	 * @param values
+	 * @return
+	 */
+	public Object excuteSql(final String sqlQueryString, final Object... values) {
+		Query query = createSQLQuery(sqlQueryString,values);
+		if (sqlQueryString.toUpperCase().startsWith("SELECT"))
+		{
+			return query.list();
+		}
+		return query.executeUpdate();
+	}
+	
 }

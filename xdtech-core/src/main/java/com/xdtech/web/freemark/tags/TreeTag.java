@@ -29,11 +29,18 @@ public class TreeTag extends EasyUiTag {
 			  .append(addProperties("url", params.get("url"), true))
 			  .append(addProperties("checkbox", params.get("checkbox")==null?false:true, false))
 			  .append(addProperties("animate", params.get("animate")==null?false:true, false))
-			  .append(addProperties("lines", params.get("lines")==null?false:true, false))
-			  .append("formatter:function(node){"+params.get("formatter")+";},")
-			  .append("onClick:function(node){"+params.get("onClick")+";},")
-			  .append("onCheck:function(node,checked){"+params.get("onCheck")+";}")
-			  .append("});");
+			  .append(addProperties("lines", params.get("lines")==null?false:true, false));
+			if (params.get("formatter")!=null) {
+				sb.append("formatter:function(node){"+params.get("formatter")+";},");
+			}
+			if (params.get("onClick")!=null) {
+				sb.append("onClick:function(node){"+params.get("onClick")+";},");
+			}
+			if (params.get("onCheck")!=null) {
+				sb.append("onCheck:function(node,checked){"+params.get("onCheck")+";}");
+			}
+			  
+			sb.append("});");
 			sb.append("});");
 			sb.append("</script>");
 			// 真正开始处理输出内容
@@ -42,5 +49,15 @@ public class TreeTag extends EasyUiTag {
 			// TODO: handle exception
 		}
 	}
+	
+	private String addJsFunction(String functionName,String functionJs){
+		//
+		StringBuffer js = new StringBuffer("");
+//		if (functionJs!=null) {
+//			js.append(functionName+"")
+//		}
+		return js.toString();
+	}
+	
 
 }
