@@ -15,6 +15,7 @@
 package com.xdtech.coder;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
@@ -24,12 +25,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.xdtech.coder.model.ModelField;
+import com.xdtech.coder.model.ModelTable;
+import com.xdtech.coder.vo.Coder;
+import com.xdtech.common.service.impl.BaseService;
+import com.xdtech.common.utils.ApplicationContextUtil;
 import com.xdtech.common.utils.DateUtil;
 import com.xdtech.common.utils.DateUtil.DateStyle;
 import com.xdtech.web.freemark.tags.ShiroTags;
 
 import freemarker.template.Configuration;
 import freemarker.template.Template;
+import freemarker.template.TemplateException;
 
 /**
  * 
@@ -50,39 +57,29 @@ public class CodeCreater {
 	// 表名称
 	static String tableName = moduleName.toUpperCase() + "_"+ modelName.toUpperCase();
 
-	static String fileUrl = "F:/zzx/codecreate";
-	
-	static List<CoderField> coderFields = new ArrayList<CoderField>();
+	static String fileUrl = "F:/zzx";
 
-//	static String beanJavaName = modelName.substring(0, 1).toUpperCase()+ modelName.substring(1, modelName.length());
 
-	static {
-//		rootMap.put("moduleName", moduleName);
-//		// 创建时间
-//		rootMap.put("createTime",
-//				DateUtil.getDate(new Date(), DateStyle.YYYY_MM_DD_HH_MM_SS));
-//		rootMap.put("modelName", modelName);
-//		rootMap.put("tableName", tableName);
-//		rootMap.put("modelBeanName", toUpperCaseFirstOne(modelName));
-//
-//		List<CoderField> coderFields = new ArrayList<CoderField>();
-//		coderFields.add(new CoderField(modelName, "Long", "id", "ID", "",true,false));
-//		coderFields.add(new CoderField(modelName, "String", "name", "NAME", "名称",true,false));
-//		coderFields.add(new CoderField(modelName, "Date", "sendTime","SEND_TIME", "发送时间",true,true));
-//		coderFields.add(new CoderField(modelName, "String", "content","CONTENT", "内容",false,false));
-//		rootMap.put("fields", coderFields);
-	}
+
 	
 	public static boolean create(Coder coder) {
 		boolean rs = true;
 		rootMap.clear();
-		moduleName = coder.getModuleName();
-		modelName = coder.getModelName();
-		tableName = coder.getTableName();
-		fileUrl = coder.getFilePath();
-		for (CoderField field : coder.getFields()) {
+		moduleName = coder.getModel().getModuleName();
+		modelName = coder.getModel().getModelName();
+		tableName = coder.getModel().getTableName();
+		BaseService baseService = ApplicationContextUtil.getContext().getBean(BaseService.class);
+		ModelTable modelTable = coder.getModel();
+		baseService.save(modelTable);
+		List<ModelField> coderFields = new ArrayList<ModelField>();
+		for (ModelField field : coder.getFields()) {
+			field.setModelTable(modelTable);
+			field.setId(null);
+			baseService.save(field);
 			coderFields.add(field);
 		}
+		modelTable.setModelFields(coderFields);
+		
 		rootMap.put("moduleName", moduleName);
 		// 创建时间
 		rootMap.put("createTime",
@@ -98,10 +95,8 @@ public class CodeCreater {
 			processService();
 			processModelItem();
 			processController();
-			
 			processModelHtml();
 			processModelEditHtml();
-			
 		} catch (Exception e) {
 			e.printStackTrace();
 			rs = false;
@@ -136,9 +131,7 @@ public class CodeCreater {
 	private static void processModelEditHtml() throws Exception {
 		Template template = cfg.getTemplate("editModelHtml.ftl");
 		String javaModelUrl = fileUrl + "/edit" + toUpperCaseFirstOne(modelName) + ".html";
-		File javaModelFile = new File(javaModelUrl);
-		template.process(rootMap, new OutputStreamWriter(new FileOutputStream(
-				javaModelFile),"UTF-8"));
+		createCodeFile(template, javaModelUrl);
 	}
 
 	/**
@@ -151,9 +144,7 @@ public class CodeCreater {
 	private static void processModelHtml() throws Exception {
 		Template template = cfg.getTemplate("modelHtml.ftl");
 		String javaModelUrl = fileUrl + "/" + modelName + ".html";
-		File javaModelFile = new File(javaModelUrl);
-		template.process(rootMap, new OutputStreamWriter(new FileOutputStream(
-				javaModelFile)));
+		createCodeFile(template, javaModelUrl);
 	}
 
 	/**
@@ -166,11 +157,7 @@ public class CodeCreater {
 	private static void processDao() throws Exception {
 		Template template = cfg.getTemplate("modelDao.ftl");
 		String javaModelUrl = fileUrl + "/" + toUpperCaseFirstOne(modelName) + "Dao.java";
-		File javaModelFile = new File(javaModelUrl);
-		OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(
-				javaModelFile));
-		template.process(rootMap, writer);
-		writer.close();
+		createCodeFile(template, javaModelUrl);
 	}
 
 	/**
@@ -183,15 +170,11 @@ public class CodeCreater {
 	private static void processService() throws Exception {
 		Template template = cfg.getTemplate("modelService.ftl");
 		String javaModelUrl = fileUrl + "/" + toUpperCaseFirstOne(modelName) + "Service.java";
-		File javaModelFile = new File(javaModelUrl);
-		template.process(rootMap, new OutputStreamWriter(new FileOutputStream(
-				javaModelFile)));
+		createCodeFile(template, javaModelUrl);
 		
 		template = cfg.getTemplate("modelServiceImpl.ftl");
 		javaModelUrl = fileUrl + "/" + toUpperCaseFirstOne(modelName) + "ServiceImpl.java";
-		javaModelFile = new File(javaModelUrl);
-		template.process(rootMap, new OutputStreamWriter(new FileOutputStream(
-				javaModelFile)));
+		createCodeFile(template, javaModelUrl);
 	}
 
 	/**
@@ -203,19 +186,17 @@ public class CodeCreater {
 	private static void processController() throws Exception {
 		Template template = cfg.getTemplate("modelController.ftl");
 		String javaModelUrl = fileUrl + "/" + toUpperCaseFirstOne(modelName) + "Controller.java";
-		File javaModelFile = new File(javaModelUrl);
-		// 合并处理（模板 + 数据模型）
-		template.process(rootMap, new OutputStreamWriter(new FileOutputStream(
-				javaModelFile)));
+		createCodeFile(template, javaModelUrl);
 	}
 
 	// 初始化工作
 	public static void init() throws Exception {
 		cfg = new Configuration();
+		String path = CodeCreater.class.getResource("/") + "coderTemplate";
+		path = path.substring(6).replaceAll("%20", " ");
 		// 设置模板文件位置
-		cfg.setDirectoryForTemplateLoading(new File(
-				"F:/GitHub/xdtech-parent/xdtech-core/src/main/java/com/xdtech/coder/template"));
-		cfg.setSharedVariable("shiro", new ElementTypeClassTags());
+		cfg.setDirectoryForTemplateLoading(new File(path));
+//		cfg.setSharedVariable("shiro", new ElementTypeClassTags());
 		File javaModelFile = new File(fileUrl);
 		if (!javaModelFile.exists()) {
 			javaModelFile.mkdir();
@@ -225,10 +206,22 @@ public class CodeCreater {
 	public static void processModel() throws Exception {
 		Template template = cfg.getTemplate("model.ftl");
 		String javaModelUrl = fileUrl + "/" + toUpperCaseFirstOne(modelName) + ".java";
+		createCodeFile(template, javaModelUrl);
+	}
+
+	private static void createCodeFile(Template template, String javaModelUrl) throws FileNotFoundException, TemplateException, IOException
+	{
 		File javaModelFile = new File(javaModelUrl);
+		if (javaModelFile.exists())
+		{
+			javaModelFile.delete();
+		}
+		OutputStreamWriter outputStreamWriter = new OutputStreamWriter(new FileOutputStream(
+				javaModelFile));
 		// 合并处理（模板 + 数据模型）
-		template.process(rootMap, new OutputStreamWriter(new FileOutputStream(
-				javaModelFile)));
+		template.process(rootMap, outputStreamWriter);
+		outputStreamWriter.flush();
+		outputStreamWriter.close();
 	}
 
 	/**
@@ -241,10 +234,7 @@ public class CodeCreater {
 	private static void processModelItem() throws Exception {
 		Template template = cfg.getTemplate("modelItem.ftl");
 		String javaModelUrl = fileUrl + "/" + toUpperCaseFirstOne(modelName) + "Item.java";
-		File javaModelFile = new File(javaModelUrl);
-		// 合并处理（模板 + 数据模型）
-		template.process(rootMap, new OutputStreamWriter(new FileOutputStream(
-				javaModelFile)));
+		createCodeFile(template, javaModelUrl);
 	}
 	
 	public static String toUpperCaseFirstOne(String name) {

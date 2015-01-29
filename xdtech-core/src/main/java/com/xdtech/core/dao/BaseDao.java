@@ -37,11 +37,7 @@ public class BaseDao<BaseModel> extends HibernateDao<BaseModel, Long> implements
 	 */
 	protected Map<String, StatementTemplate> templateCache;
 	protected DynamicHibernateStatementBuilder dynamicStatementBuilder;
-	protected JdbcTemplate jdbcTemplate;
-	@Autowired
-	public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
-		this.jdbcTemplate = jdbcTemplate;
-	}
+	
 
 
 	@Autowired
@@ -285,27 +281,5 @@ public class BaseDao<BaseModel> extends HibernateDao<BaseModel, Long> implements
 		return page;
 	}
 	
-	public Page excuteQuerySqlByJdbc(final PageRequest pageRequest,final String sql,Object... args) {
-		Page page = new Page(pageRequest);
-		long totalCount = jdbcTemplate.queryForLong(crateJdbcCountSql(sql));
-		page.setTotalItems(totalCount);
-		List<Map<String, Object>> rsList = new ArrayList<Map<String,Object>>();
-		if (totalCount>0) {
-			rsList = jdbcTemplate.queryForList(createJdbcPageSql(pageRequest, sql), args); 
-		}	
-		page.setResult(rsList);
-		return page;
-	}
 	
-	private String crateJdbcCountSql(final String sql) {
-		return "select count(*) from ("+sql+") AS temp";
-	}
-	
-	private String createJdbcPageSql(final PageRequest pageRequest,final String sql) {
-		StringBuffer sb = new StringBuffer(sql);
-		int benginIndex = (pageRequest.getPage()-1)*pageRequest.getRows();
-		int endIndex = pageRequest.getPage()*pageRequest.getRows();
-		sb.append(" limit "+benginIndex+","+endIndex);
-		return sb.toString();
-	}
 }

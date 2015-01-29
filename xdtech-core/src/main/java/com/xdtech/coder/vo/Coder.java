@@ -12,10 +12,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.xdtech.coder;
+package com.xdtech.coder.vo;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import com.xdtech.coder.model.ModelField;
+import com.xdtech.coder.model.ModelTable;
 
 /**
  * 
@@ -26,53 +29,25 @@ import java.util.List;
  */
 public class Coder {
 
-	private String moduleName;
+	private ModelTable model = new ModelTable();
 	
-	private String modelName;
-	
-	private String tableName;
-	
-	private String filePath;
-	
-	private List<CoderField> fields = new ArrayList<CoderField>();
+	private List<ModelField> fields = new ArrayList<ModelField>();
 
-	public String getModuleName() {
-		return moduleName;
+	public ModelTable getModel()
+	{
+		return model;
 	}
 
-	public void setModuleName(String moduleName) {
-		this.moduleName = moduleName;
+	public void setModel(ModelTable model)
+	{
+		this.model = model;
 	}
 
-	public String getModelName() {
-		return modelName;
-	}
-
-	public void setModelName(String modelName) {
-		this.modelName = modelName;
-	}
-
-	public String getTableName() {
-		return tableName;
-	}
-
-	public void setTableName(String tableName) {
-		this.tableName = tableName;
-	}
-
-	public String getFilePath() {
-		return filePath;
-	}
-
-	public void setFilePath(String filePath) {
-		this.filePath = filePath;
-	}
-
-	public List<CoderField> getFields() {
+	public List<ModelField> getFields() {
 		return fields;
 	}
 
-	public void setFields(List<CoderField> fields) {
+	public void setFields(List<ModelField> fields) {
 		this.fields = fields;
 	}
 	

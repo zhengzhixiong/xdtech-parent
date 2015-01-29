@@ -83,7 +83,8 @@ public class DataGridTag extends EasyUiTag
 		{
 			String className = params.get("item").toString();
 			boolean pagination = params.get("pagination") != null ? Boolean.valueOf(params.get("pagination").toString()) : true;
-			
+			boolean isEditable= params.get("autoEditing")!= null ? Boolean.valueOf(params.get("autoEditing").toString()):false;
+
 			String tableId = params.get("id") == null ? UUID.randomUUID().toString() : params.get("id").toString();
 			StringBuffer sb = new StringBuffer("<table id=\"" + tableId + "\" data-options=\"border:false\"></table>");
 			sb.append("<script type=\"text/javascript\">")
@@ -105,9 +106,10 @@ public class DataGridTag extends EasyUiTag
 					.append(addProperties("singleSelect", params.get("singleSelect")!= null ? params.get("singleSelect"):true, false))
 					.append(addProperties("checkbox", params.get("checkbox"), false))
 					.append(addProperties("idField", params.get("idField")!= null ? params.get("idField"):"id", true))
+					.append(addGridEditable(params,isEditable,tableId))//添加表格编辑功能
 					.append(addEvent(params))
 					.append(createPagination(pagination))
-					.append(createColumns(className,params.get("idField")!=null,params.get("operations")))
+					.append(createColumns(className,params.get("idField")!=null,params.get("operations"),isEditable))
 					.append("});");
 			if (pagination)
 			{
@@ -134,6 +136,28 @@ public class DataGridTag extends EasyUiTag
 	}
 
 	
+
+	/**
+	 * 
+	 * @author max.zheng
+	 * @create 2015-1-27下午9:59:50
+	 * @modified by
+	 * @param params
+	 * @return
+	 */
+	private String addGridEditable(Map params,Boolean isEditable,String tableId) {
+		StringBuffer sb = new StringBuffer();
+		if (isEditable) {
+			sb.append(addProperties("autoEditing",isEditable, false))
+			  .append(addProperties("singleEditing", params.get("singleEditing")!= null ? params.get("singleEditing"):false, false))
+			  .append(addProperties("extEditing", params.get("extEditing")!= null ? params.get("extEditing"):true, false))
+			  .append("rowContextMenu: [{ text: \"编辑\", iconCls: \"icon-edit\", handler: function (e, index) { "+tableId+".datagrid(\"beginEdit\", index); } }],");
+		}
+
+		return sb.toString();
+	}
+
+
 
 	/**
 	 * 添加事件相关操作
@@ -165,7 +189,7 @@ public class DataGridTag extends EasyUiTag
 		return sb.toString();
 	}
 
-	private String createColumns(String className,boolean showChecked,Object operations) throws ClassNotFoundException
+	private String createColumns(String className,boolean showChecked,Object operations,Boolean isEditable) throws ClassNotFoundException
 	{
 		Class itemCls = Class.forName(className);
 		Field[] fields = itemCls.getDeclaredFields();
@@ -196,6 +220,10 @@ public class DataGridTag extends EasyUiTag
 					
 					}
 					sb.append("},");
+				}
+				if (isEditable) {
+					//目前先支持文本内嵌编辑
+					sb.append("editor : {type : 'text'}");
 				}
 				sb.append("},");
 			}

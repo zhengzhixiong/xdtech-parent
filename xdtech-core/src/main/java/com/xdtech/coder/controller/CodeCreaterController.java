@@ -15,7 +15,6 @@
 package com.xdtech.coder.controller;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.springframework.stereotype.Component;
@@ -24,8 +23,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.xdtech.coder.CodeCreater;
-import com.xdtech.coder.Coder;
-import com.xdtech.coder.CoderField;
+import com.xdtech.coder.model.ModelField;
+import com.xdtech.coder.model.ModelTable;
+import com.xdtech.coder.vo.Coder;
 import com.xdtech.common.utils.JsonUtil;
 import com.xdtech.web.model.ResultMessage;
 
@@ -47,7 +47,8 @@ public class CodeCreaterController {
 	@ResponseBody
 	public ResultMessage createCode(String data) {
 		Map<String, Class> classMap = new HashMap<String, Class>();
-		classMap.put("fields", CoderField.class);
+		classMap.put("fields", ModelField.class);
+		classMap.put("model", ModelTable.class);
 		Coder coder = (Coder) JsonUtil.getObjByJson(data, Coder.class,classMap);
 //		System.out.println(coder);
 		CodeCreater.create(coder);

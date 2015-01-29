@@ -102,8 +102,8 @@
 		if (id) {
 			$.messager.confirm('询问', '你确认要删除吗?', function(r) {
 				if (r) {
-					$.post('${modelName}.do?delete${modelName?cap_first}', {
-						id : id
+					$.post('${modelName}.do?delete${modelName?cap_first}Items', {
+						ids : id
 					}, function(result) {
 						if (result.success) {
 							reload${modelName?cap_first}(); 

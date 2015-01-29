@@ -2,6 +2,7 @@ package com.xdtech.web.freemark.tags;
 
 import java.io.IOException;
 import java.util.Map;
+import java.util.UUID;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.shiro.SecurityUtils;
@@ -18,9 +19,10 @@ public class LinkButtonTag extends EasyUiTag {
 		// <a href="javascript:void(0)" class="easyui-linkbutton"
 		// iconCls="icon-add" plain="true" onclick="newUser()">New User</a>
 		StringBuffer sb = new StringBuffer();
+		String id = params.get("id")==null?UUID.randomUUID().toString():params.get("id").toString();
 		if (params.get("shiro")==null||(SecurityUtils.getSubject().isPermitted(params.get("shiro").toString()))) {
-			sb.append("<a href=\"javascript:void(0)\" class=\"easyui-linkbutton\"")
-			  .append(" iconCls=\""+params.get("iconCls").toString()+"\"")
+			sb.append("<a id=\""+id+"\" href=\"javascript:void(0)\" class=\"easyui-linkbutton\"")
+			  .append(" iconCls=\""+params.get("iconCls")+"\"")
 			  .append(" plain=\"true\"")
 			  .append(" onclick=\""+params.get("onclick")+"\"")
 			  .append(">")

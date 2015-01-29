@@ -17,7 +17,6 @@ package com.xdtech.coder;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.Map;
-import java.util.UUID;
 
 import freemarker.core.Environment;
 import freemarker.template.TemplateDirectiveBody;
